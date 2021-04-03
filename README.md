@@ -1,6 +1,24 @@
 # GTS
 [Grid Tagging Scheme for Aspect-oriented Fine-grained Opinion Extraction](https://arxiv.org/pdf/2010.04640.pdf). Zhen Wu, Chengcan Ying, Fei Zhao, Zhifang Fan, Xinyu Dai, Rui Xia. In Findings of EMNLP, 2020.
 
+## Evaluation on ASOTE
+We folk this repository from the [GTS repository](https://github.com/NJUNLP/GTS) and evaluate the [GTS model](https://arxiv.org/pdf/2010.04640.pdf) on the [ASOTE](https://arxiv.org/pdf/2103.15255.pdf) task.
+
+### Supported datasets
+res14, lap14, res15, res16
+
+### LSTM
+python main.py --task triplet --mode train --model bilstm --device cpu --dataset res14
+python main.py --task triplet --mode test --model bilstm --device cpu --dataset res14
+
+#### CNN
+python main.py --task triplet --mode train --model cnn --device cpu --dataset res14
+python main.py --task triplet --mode test --model cnn --device cpu --dataset res14
+
+### BERT
+python main.py --task triplet --mode train --device cpu --dataset res14
+python main.py --task triplet --mode test --device cpu --dataset res14
+
 ## Data
 [[Data](https://github.com/NJUNLP/GTS/tree/main/data)]   [[Pre-trained Model](https://drive.google.com/drive/folders/15HZun7FeObpNaJF1gwrJxn2H6e28LPZY?usp=sharing)(from huggingface)]. Data format descriptions are [here](https://github.com/NJUNLP/GTS/blob/main/data/datareadme.md).
 
@@ -27,18 +45,6 @@ python main.py --task pair --mode test --dataset res14
 ```
 
 **Note**: In our pre-experiments, a smaller batch size and learning rate can achieve better performance on certain datasets, while we use a general setting in our paper to save time instead of adopting grid search.
-
-## ASOTE
-### LSTN
-python main.py --task triplet --mode train --model bilstm --device cpu --dataset res14
-python main.py --task triplet --mode test --model bilstm --device cpu --dataset res14
-
-#### CNN
-
-### BERT
-python main.py --task triplet --mode train --device cpu --dataset res14
-python main.py --task triplet --mode test --device cpu --dataset res14
-
 
 ## Citation
 If you used the datasets or code, please cite our paper:

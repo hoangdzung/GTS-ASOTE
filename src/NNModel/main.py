@@ -15,6 +15,16 @@ from src.NNModel.model import MultiInferRNNModel, MultiInferCNNModel
 from src.NNModel import utils
 
 
+def get_model_path(args):
+    """
+
+    :param args:
+    :return:
+    """
+    return os.path.join(args.model_dir,
+                        '%s-%s-%s-%s.pt' % (args.dataset, args.model, args.task, args.current_run))
+
+
 def train(args):
 
     # load double embedding
@@ -73,7 +83,7 @@ def train(args):
         joint_precision, joint_recall, joint_f1 = eval(model, devset, args)
 
         if joint_f1 > best_joint_f1:
-            model_path = args.model_dir + args.model + args.task + ('.%s' % args.current_run) + '.pt'
+            model_path = get_model_path(args)
             torch.save(model, model_path)
             best_joint_f1 = joint_f1
             best_joint_epoch = i
@@ -117,7 +127,7 @@ def eval(model, dataset, args):
 
 def test(args):
     print("Evaluation on testset:")
-    model_path = args.model_dir + args.model + args.task + ('.%s' % args.current_run) + '.pt'
+    model_path = get_model_path(args)
     model = torch.load(model_path).to(args.device)
     model.eval()
 
@@ -134,7 +144,7 @@ if __name__=='__main__':
 
     parser.add_argument('--prefix', type=str, default="../../data/",
                         help='dataset and embedding path prefix')
-    parser.add_argument('--model_dir', type=str, default=r"D:\GTS-ASOTE-model\\",
+    parser.add_argument('--model_dir', type=str, default=r"D:/GTS-ASOTE-model/",
                         help='model path prefix')
     parser.add_argument('--task', type=str, default="pair", choices=["pair", "triplet"],
                         help='option: pair, triplet')
@@ -172,7 +182,7 @@ if __name__=='__main__':
     if args.task == 'triplet':
         args.class_num = 6
 
-    run_times = 1
+    run_times = 5
     for i in range(run_times):
         args.current_run = i
         if args.mode == 'train':
