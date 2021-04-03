@@ -28,6 +28,18 @@ python main.py --task pair --mode test --dataset res14
 
 **Note**: In our pre-experiments, a smaller batch size and learning rate can achieve better performance on certain datasets, while we use a general setting in our paper to save time instead of adopting grid search.
 
+## ASOTE
+### LSTN
+python main.py --task triplet --mode train --model bilstm --device cpu --dataset res14
+python main.py --task triplet --mode test --model bilstm --device cpu --dataset res14
+
+#### CNN
+
+### BERT
+python main.py --task triplet --mode train --device cpu --dataset res14
+python main.py --task triplet --mode test --device cpu --dataset res14
+
+
 ## Citation
 If you used the datasets or code, please cite our paper:
 ```bibtex

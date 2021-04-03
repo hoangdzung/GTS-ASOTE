@@ -8,17 +8,17 @@ import torch
 import torch.nn.functional as F
 from tqdm import trange
 
-from code.BertModel.data import load_data_instances, DataIterator
-from model import MultiInferBert
-import utils
+from src.BertModel.data import load_data_instances, DataIterator
+from src.BertModel.model import MultiInferBert
+from src.BertModel import utils
 
 
 def train(args):
 
     # load dataset
-    train_sentence_packs = json.load(open(args.prefix + args.dataset + '/train.json'))
+    train_sentence_packs = json.load(open(args.prefix + args.dataset + '/train.asote.json'))
     random.shuffle(train_sentence_packs)
-    dev_sentence_packs = json.load(open(args.prefix + args.dataset + '/dev.json'))
+    dev_sentence_packs = json.load(open(args.prefix + args.dataset + '/dev.asote.json'))
     instances_train = load_data_instances(train_sentence_packs, args)
     instances_dev = load_data_instances(dev_sentence_packs, args)
     random.shuffle(instances_train)
@@ -53,7 +53,7 @@ def train(args):
         joint_precision, joint_recall, joint_f1 = eval(model, devset, args)
 
         if joint_f1 > best_joint_f1:
-            model_path = args.model_dir + 'bert' + args.task + '.pt'
+            model_path = args.model_dir + args.model + args.task + ('.%s' % args.current_run) + '.pt'
             torch.save(model, model_path)
             best_joint_f1 = joint_f1
             best_joint_epoch = i
@@ -100,11 +100,11 @@ def eval(model, dataset, args):
 
 def test(args):
     print("Evaluation on testset:")
-    model_path = args.model_dir + 'bert' + args.task + '.pt'
+    model_path = args.model_dir + args.model + args.task + ('.%s' % args.current_run) + '.pt'
     model = torch.load(model_path).to(args.device)
     model.eval()
 
-    sentence_packs = json.load(open(args.prefix + args.dataset + '/test.json'))
+    sentence_packs = json.load(open(args.prefix + args.dataset + '/test.asote.json'))
     instances = load_data_instances(sentence_packs, args)
     testset = DataIterator(instances, args)
     eval(model, testset, args)
@@ -115,7 +115,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--prefix', type=str, default="../../data/",
                         help='dataset and embedding path prefix')
-    parser.add_argument('--model_dir', type=str, default="savemodel/",
+    parser.add_argument('--model_dir', type=str, default=r'D:\GTS-ASOTE-model\bert\\',
                         help='model path prefix')
     parser.add_argument('--task', type=str, default="pair", choices=["pair", "triplet"],
                         help='option: pair, triplet')
@@ -129,10 +129,10 @@ if __name__ == '__main__':
                         help='gpu or cpu')
 
     parser.add_argument('--bert_model_path', type=str,
-                        default="pretrained/bert-base-uncased",
+                        default=r'pretrained/bert-base-uncased/',
                         help='pretrained bert model path')
     parser.add_argument('--bert_tokenizer_path', type=str,
-                        default="pretrained/bert-base-uncased/bert-base-uncased-vocab.txt",
+                        default=r'pretrained/bert-base-uncased/bert-base-uncased-vocab.txt',
                         help='pretrained bert tokenizer path')
     parser.add_argument('--bert_feature_dim', type=int, default=768,
                         help='dimension of pretrained bert feature')
@@ -145,14 +145,18 @@ if __name__ == '__main__':
                         help='training epoch number')
     parser.add_argument('--class_num', type=int, default=4,
                         help='label number')
-
+    parser.add_argument('--current_run', type=int, default=0,
+                        help='label number')
     args = parser.parse_args()
 
     if args.task == 'triplet':
         args.class_num = 6
 
-    if args.mode == 'train':
-        train(args)
-        test(args)
-    else:
-        test(args)
+    run_times = 1
+    for i in range(run_times):
+        args.current_run = i
+        if args.mode == 'train':
+            train(args)
+            test(args)
+        else:
+            test(args)

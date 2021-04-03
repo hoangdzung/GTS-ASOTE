@@ -10,24 +10,26 @@ import torch.nn.functional as F
 from tqdm import trange
 import numpy as np
 
-from code.NNModel.data import load_data_instances, DataIterator
-from code.NNModel.model import MultiInferRNNModel, MultiInferCNNModel
-import code.NNModel.utils
+from src.NNModel.data import load_data_instances, DataIterator
+from src.NNModel.model import MultiInferRNNModel, MultiInferCNNModel
+from src.NNModel import utils
 
 
 def train(args):
 
     # load double embedding
     word2index = json.load(open(args.prefix + 'doubleembedding/word_idx.json'))
+    word2index['<unk>'] = 1
+
     general_embedding = numpy.load(args.prefix +'doubleembedding/gen.vec.npy')
     general_embedding = torch.from_numpy(general_embedding)
     domain_embedding = numpy.load(args.prefix +'doubleembedding/'+args.dataset+'_emb.vec.npy')
     domain_embedding = torch.from_numpy(domain_embedding)
 
     # load dataset
-    train_sentence_packs = json.load(open(args.prefix + args.dataset + '/train.json'))
+    train_sentence_packs = json.load(open(args.prefix + args.dataset + '/train.asote.json'))
     random.shuffle(train_sentence_packs)
-    dev_sentence_packs = json.load(open(args.prefix + args.dataset + '/dev.json'))
+    dev_sentence_packs = json.load(open(args.prefix + args.dataset + '/dev.asote.json'))
 
     instances_train = load_data_instances(train_sentence_packs, word2index, args)
     instances_dev = load_data_instances(dev_sentence_packs, word2index, args)
@@ -71,7 +73,7 @@ def train(args):
         joint_precision, joint_recall, joint_f1 = eval(model, devset, args)
 
         if joint_f1 > best_joint_f1:
-            model_path = args.model_dir + args.model + args.task + '.pt'
+            model_path = args.model_dir + args.model + args.task + ('.%s' % args.current_run) + '.pt'
             torch.save(model, model_path)
             best_joint_f1 = joint_f1
             best_joint_epoch = i
@@ -115,12 +117,13 @@ def eval(model, dataset, args):
 
 def test(args):
     print("Evaluation on testset:")
-    model_path = args.model_dir + args.model + args.task + '.pt'
+    model_path = args.model_dir + args.model + args.task + ('.%s' % args.current_run) + '.pt'
     model = torch.load(model_path).to(args.device)
     model.eval()
 
     word2index = json.load(open(args.prefix + 'doubleembedding/word_idx.json'))
-    sentence_packs = json.load(open(args.prefix + args.dataset + '/test.json'))
+    word2index['<unk>'] = 1
+    sentence_packs = json.load(open(args.prefix + args.dataset + '/test.asote.json'))
     instances = load_data_instances(sentence_packs, word2index, args)
     testset = DataIterator(instances, args)
     eval(model, testset, args)
@@ -131,7 +134,7 @@ if __name__=='__main__':
 
     parser.add_argument('--prefix', type=str, default="../../data/",
                         help='dataset and embedding path prefix')
-    parser.add_argument('--model_dir', type=str, default="savemodel/",
+    parser.add_argument('--model_dir', type=str, default=r"D:\GTS-ASOTE-model\\",
                         help='model path prefix')
     parser.add_argument('--task', type=str, default="pair", choices=["pair", "triplet"],
                         help='option: pair, triplet')
@@ -157,9 +160,11 @@ if __name__=='__main__':
                         help='learning rate')
     parser.add_argument('--batch_size', type=int, default=32,
                         help='bathc size')
-    parser.add_argument('--epochs', type=int, default=600,
+    parser.add_argument('--epochs', type=int, default=100,
                         help='training epoch number')
     parser.add_argument('--class_num', type=int, default=4,
+                        help='label number')
+    parser.add_argument('--current_run', type=int, default=0,
                         help='label number')
 
     args = parser.parse_args()
@@ -167,8 +172,11 @@ if __name__=='__main__':
     if args.task == 'triplet':
         args.class_num = 6
 
-    if args.mode == 'train':
-        train(args)
-        test(args)
-    else:
-        test(args)
+    run_times = 1
+    for i in range(run_times):
+        args.current_run = i
+        if args.mode == 'train':
+            train(args)
+            test(args)
+        else:
+            test(args)

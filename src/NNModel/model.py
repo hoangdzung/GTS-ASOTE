@@ -3,7 +3,7 @@ import torch.nn
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 import torch.nn.functional as F
 
-from code.NNModel.attention_module import MultiHeadedAttention, SelfAttention
+from src.NNModel.attention_module import MultiHeadedAttention, SelfAttention
 
 
 class MultiInferRNNModel(torch.nn.Module):
