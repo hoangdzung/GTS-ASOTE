@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+start_time=`date +%Y%m%d%H%M%S`
+echo "start ${start_time}--------------------------------------------------"
+
+gpu_card=$1
+shift
+
+export CUDA_VISIBLE_DEVICES=${gpu_card}
+
+#export LD_LIBRARY_PATH="/usr/local/cuda-10.0/lib64:$LD_LIBRARY_PATH"
+#export PATH="/usr/local/cuda-10.0/bin:$PATH"
+
+python=/data/ceph/11006/data-lyc/anaconda3-gts/bin/python
+
+export LANG="zh_CN.UTF-8"
+
+CUR_DIR=`pwd`
+
+ROOT=${CUR_DIR}
+
+export PYTHONPATH=${ROOT}:${PYTHONPATH}
+
+for i in `seq 0 4`
+do
+	${python} $@ --current_run $i
+done
+
+end_time=`date +%Y%m%d%H%M%S`
+echo ${end_time}

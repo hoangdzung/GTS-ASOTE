@@ -182,11 +182,8 @@ if __name__=='__main__':
     if args.task == 'triplet':
         args.class_num = 6
 
-    run_times = 5
-    for i in range(run_times):
-        args.current_run = i
-        if args.mode == 'train':
-            train(args)
-            test(args)
-        else:
-            test(args)
+    if args.mode == 'train':
+        train(args)
+        test(args)
+    else:
+        test(args)

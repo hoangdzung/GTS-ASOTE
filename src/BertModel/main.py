@@ -129,6 +129,7 @@ if __name__ == '__main__':
                         help='model path prefix')
     parser.add_argument('--task', type=str, default="pair", choices=["pair", "triplet"],
                         help='option: pair, triplet')
+    parser.add_argument('--model', type=str, default="bert", help='bert')
     parser.add_argument('--mode', type=str, default="train", choices=["train", "test"],
                         help='option: train, test')
     parser.add_argument('--dataset', type=str, default="res14", choices=["res14", "lap14", "res15", "res16"],
@@ -151,7 +152,7 @@ if __name__ == '__main__':
                         help='inference times')
     parser.add_argument('--batch_size', type=int, default=32,
                         help='bathc size')
-    parser.add_argument('--epochs', type=int, default=100,
+    parser.add_argument('--epochs', type=int, default=50,
                         help='training epoch number')
     parser.add_argument('--class_num', type=int, default=4,
                         help='label number')
@@ -162,11 +163,8 @@ if __name__ == '__main__':
     if args.task == 'triplet':
         args.class_num = 6
 
-    run_times = 5
-    for i in range(run_times):
-        args.current_run = i
-        if args.mode == 'train':
-            train(args)
-            test(args)
-        else:
-            test(args)
+    if args.mode == 'train':
+        train(args)
+        test(args)
+    else:
+        test(args)
