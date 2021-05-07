@@ -9,32 +9,44 @@ res14, lap14, res15, res16
 
 ### LSTM
 sh run.sh 4 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode train --model bilstm --dataset res14 > bilstm.res14.log 2>&1 &
+sh run.sh 4 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode test --model bilstm --dataset res14 > bilstm.res14.log 2>&1 &
 
 sh run.sh 5 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode train --model bilstm --dataset lap14 > bilstm.lap14.log 2>&1 &
+sh run.sh 5 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode test --model bilstm --dataset lap14 > bilstm.lap14.log 2>&1 &
 
 sh run.sh 4 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode train --model bilstm --dataset res15 > bilstm.res15.log 2>&1 &
+sh run.sh 4 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode test --model bilstm --dataset res15 > bilstm.res15.log 2>&1 &
 
 sh run.sh 5 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode train --model bilstm --dataset res16 > bilstm.res16.log 2>&1 &
+sh run.sh 5 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode test --model bilstm --dataset res16 > bilstm.res16.log 2>&1 &
 
 
 #### CNN
 sh run.sh 6 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode train --model cnn --dataset res14 > cnn.res14.log 2>&1 &
+sh run.sh 6 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode test --model cnn --dataset res14 > cnn.res14.log 2>&1 &
 
 sh run.sh 7 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode train --model cnn --dataset lap14 > cnn.lap14.log 2>&1 &
+sh run.sh 7 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode test --model cnn --dataset lap14 > cnn.lap14.log 2>&1 &
 
 sh run.sh 6 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode train --model cnn --dataset res15 > cnn.res15.log 2>&1 &
+sh run.sh 6 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode test --model cnn --dataset res15 > cnn.res15.log 2>&1 &
 
 sh run.sh 7 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode train --model cnn --dataset res16 > cnn.res16.log 2>&1 &
+sh run.sh 7 src/NNModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/ --task triplet --mode test --model cnn --dataset res16 > cnn.res16.log 2>&1 &
 
 
 ### BERT
 sh run.sh 0 src/BertModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/bert/ --task triplet --mode train --dataset res14 > bert.res14.log 2>&1 &
+sh run.sh 0 src/BertModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/bert/ --task triplet --mode test --dataset res14 > bert.res14.log 2>&1 &
 
 sh run.sh 1 src/BertModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/bert/ --task triplet --mode train --dataset lap14 > bert.lap14.log 2>&1 &
+sh run.sh 1 src/BertModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/bert/ --task triplet --mode test --dataset lap14 > bert.lap14.log 2>&1 &
 
 sh run.sh 2 src/BertModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/bert/ --task triplet --mode train --dataset res15 > bert.res15.log 2>&1 &
+sh run.sh 2 src/BertModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/bert/ --task triplet --mode test --dataset res15 > bert.res15.log 2>&1 &
 
 sh run.sh 3 src/BertModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/bert/ --task triplet --mode train --dataset res16 > bert.res16.log 2>&1 &
+sh run.sh 3 src/BertModel/main.py --prefix data/ --model_dir GTS-ASOTE-model/bert/ --task triplet --mode test --dataset res16 > bert.res16.log 2>&1 &
 
 ## Data
 [[Data](https://github.com/NJUNLP/GTS/tree/main/data)]   [[Pre-trained Model](https://drive.google.com/drive/folders/15HZun7FeObpNaJF1gwrJxn2H6e28LPZY?usp=sharing)(from huggingface)]. Data format descriptions are [here](https://github.com/NJUNLP/GTS/blob/main/data/datareadme.md).

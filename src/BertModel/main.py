@@ -26,9 +26,9 @@ def get_model_path(args):
 def train(args):
 
     # load dataset
-    train_sentence_packs = json.load(open(args.prefix + args.dataset + '/train.asote.json'))
+    train_sentence_packs = json.load(open(args.prefix + args.dataset + '/train.asote.v2.json'))
     random.shuffle(train_sentence_packs)
-    dev_sentence_packs = json.load(open(args.prefix + args.dataset + '/dev.asote.json'))
+    dev_sentence_packs = json.load(open(args.prefix + args.dataset + '/dev.asote.v2.json'))
     instances_train = load_data_instances(train_sentence_packs, args)
     instances_dev = load_data_instances(dev_sentence_packs, args)
     random.shuffle(instances_train)
@@ -114,7 +114,7 @@ def test(args):
     model = torch.load(model_path).to(args.device)
     model.eval()
 
-    sentence_packs = json.load(open(args.prefix + args.dataset + '/test.asote.json'))
+    sentence_packs = json.load(open(args.prefix + args.dataset + '/test.asote.v2.json'))
     instances = load_data_instances(sentence_packs, args)
     testset = DataIterator(instances, args)
     eval(model, testset, args)

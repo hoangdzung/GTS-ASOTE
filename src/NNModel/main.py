@@ -37,9 +37,9 @@ def train(args):
     domain_embedding = torch.from_numpy(domain_embedding)
 
     # load dataset
-    train_sentence_packs = json.load(open(args.prefix + args.dataset + '/train.asote.json'))
+    train_sentence_packs = json.load(open(args.prefix + args.dataset + '/train.asote.v2.json'))
     random.shuffle(train_sentence_packs)
-    dev_sentence_packs = json.load(open(args.prefix + args.dataset + '/dev.asote.json'))
+    dev_sentence_packs = json.load(open(args.prefix + args.dataset + '/dev.asote.v2.json'))
 
     instances_train = load_data_instances(train_sentence_packs, word2index, args)
     instances_dev = load_data_instances(dev_sentence_packs, word2index, args)
@@ -133,7 +133,7 @@ def test(args):
 
     word2index = json.load(open(args.prefix + 'doubleembedding/word_idx.json'))
     word2index['<unk>'] = 1
-    sentence_packs = json.load(open(args.prefix + args.dataset + '/test.asote.json'))
+    sentence_packs = json.load(open(args.prefix + args.dataset + '/test.asote.v2.json'))
     instances = load_data_instances(sentence_packs, word2index, args)
     testset = DataIterator(instances, args)
     eval(model, testset, args)
